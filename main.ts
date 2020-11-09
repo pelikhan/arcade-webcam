@@ -11,7 +11,7 @@ namespace webcam {
     let initialized = false;
     export let currentFrame: Image = undefined;
 
-    /** 
+    /**
      * Registers a handler when an image is onReceived
      * from the webcam
     */
