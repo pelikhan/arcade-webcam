@@ -15,7 +15,7 @@ namespace webcam {
      * Registers a handler when an image is onReceived
      * from the webcam
     */
-    export function onFrame(handler: () => void) {
+    export function onFrameReceived(handler: () => void) {
         init()
         control.onEvent(EVENT_ID, FRAME_EVENT, function() {
             if (handler)
