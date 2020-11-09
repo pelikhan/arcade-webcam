@@ -19,5 +19,6 @@
         "arcade"
     ],
     "preferredEditor": "tsprj",
-    "languageRestriction": "javascript-only"
+    "languageRestriction": "javascript-only",
+    "disableTargetTemplateFiles": true
 }
