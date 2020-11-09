@@ -1,1 +1,6 @@
-// tests go here; this will not be compiled when this package is used as an extension.
+// just paint background with image
+webcam.onFrame(function() {
+    const frame = webcam.currentFrame;
+    if (frame)
+        scene.setBackgroundImage(frame)
+})
