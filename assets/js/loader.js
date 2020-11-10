@@ -1,7 +1,14 @@
 var channelHandlers = {}
 
-function addSimMessageHandler(channel, handler) {
-    channelHandlers[channel] = handler;
+function addSimMessageHandler(channel /* string */,
+    handler /* (msg: Uint8Array) => void */,
+    init /* (props: { send: (msg: Uint8Array) => void }) => void */
+) {
+    channelHandlers[channel] = {
+        channel: channel,
+        init: init,
+        handler: handler
+    };
 }
 
 function makeCodeRun(options) {
@@ -97,13 +104,13 @@ function makeCodeRun(options) {
                     break;
             }
         } else if (d.type === "messagepacket" && d.channel) {
-            const handler = channelHandlers[d.channel]
-            if (handler) {
+            const ch = channelHandlers[d.channel]
+            if (ch) {
                 try {
                     const buf = d.data;
                     const str = uint8ArrayToString(buf);
                     const data = JSON.parse(str)
-                    handler(data);
+                    ch.handler(data);
                 } catch (e) {
                     console.log(`invalid simmessage`)
                     console.log(e)
@@ -111,6 +118,19 @@ function makeCodeRun(options) {
             }
         }            
     }, false);
+
+    // initialize simmessages
+    Object.keys(channelHandlers)
+        .map(k => channelHandlers[k])
+        .filter(ch => !!ch.start)
+        .forEach(ch => {
+            const send = (msg) => postMessage({
+                type: "messagepacket",
+                channel: ch.channel,
+                data: msg
+            })
+            ch.start({ send });
+        })
 
     // helpers
     function uint8ArrayToString(input) {

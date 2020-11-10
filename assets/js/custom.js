@@ -12,7 +12,11 @@ document.addEventListener("DOMContentLoaded", function () {
     function draw() {
         if (video.paused || video.ended) return false;
         context.drawImage(v, 0, 0, w, h);
-        // convert canvas to pxt iamge
+        // map rgb data to palette
+        //
+        // convert canvas to pxt image
+        //
+        // send image to pxt
     }
 
     // draw at 50fps
